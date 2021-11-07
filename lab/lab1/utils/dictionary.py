@@ -1,13 +1,6 @@
 from .utils import *
 
-mod = 100007
-
-def remove_repeated_words(words):
-    new_words = [words[0]]
-    for i in range(1, len(words)):
-        if words[i] != words[i - 1]:
-            new_words.append(words[i])
-    return new_words
+mod = 8647
 
 def get_single_words(words):
     single_words = []
@@ -19,7 +12,8 @@ def get_single_words(words):
 
 def hash(word, hash_base):
     hash_base_, hash_res = 1, 0
-    codes = word.encode('utf-8')
+    codes = word.encode('gbk')
+    # print(codes)
     for code in codes:
         hash_res += hash_base_ * code
         hash_base_ *= hash_base
@@ -27,7 +21,6 @@ def hash(word, hash_base):
     return hash_res
 
 def get_hash_base(single_words):
-    print(single_words)
     hash_base_candidates = range(mod)
     for hash_base in hash_base_candidates:
         legal = True
@@ -40,10 +33,7 @@ def get_hash_base(single_words):
             else: hashes.append(hash_res)
         if legal: 
             hashes.sort()
-            print(hashes)
-            print(len(hashes))
-            print(max(hashes))
-            return hash_base
-    return -1
+            return hash_base, max(hashes)
+    return -1, -1
 
 
