@@ -1,2 +1,2 @@
-from .dictionary import *
-from .utils import * 
+from .path import *
+from .my_structure import *

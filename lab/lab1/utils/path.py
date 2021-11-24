@@ -1,0 +1,8 @@
+DATA1_SEG_POS = './data/data_1/199801_seg&pos.txt'
+DATA1_CONTENT = './data/data_1/199801_sent.txt'
+DATA1_TRAIN_POS = './data/data_1/199801_train_pos.txt'
+DATA1_TEST_POS = './data/data_1/199801_test_pos.txt'
+DATA1_TEST_CONTENT = './data/data_1/199801_test_content.txt'
+DATA1_DICT = './output/data_1/dic.txt'
+DATA1_FMM = './output/data_1/seg_FMM.txt'
+DATA1_BMM = './output/data_1/seg_BMM.txt'
