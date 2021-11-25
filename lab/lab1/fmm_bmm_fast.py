@@ -17,7 +17,7 @@ class MM:
         
     def MM(self, MM_type='F'):
         self.trie = Trie(self.DICT_path)
-        self.trie.build(reverse=True if MM_type != 'F' else False)
+        self.trie.build(reverse=True if MM_type != 'F' else False, fast=True)
         f_mm = open(DATA1_FMM if MM_type == 'F' else DATA1_BMM, 'a', encoding='utf8')
 
         with open(self.CONTENT_path, 'r', encoding='utf8') as f:
@@ -25,8 +25,9 @@ class MM:
         for line in lines:
             now_line, segs = line if MM_type == 'F' else line[::-1], []
             while len(now_line) > 0:
-                result = self.trie.search(now_line[:self.trie.max_len])
+                result = self.trie.search(fast_trick_2_byte(now_line[:self.trie.max_len]))
                 if result is not None:
+                    result = fast_trick_2_str(result)
                     segs.append(result)
                     now_line = now_line[len(result):]
                 else:
