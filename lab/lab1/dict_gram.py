@@ -2,7 +2,7 @@
 
 from utils import *
 
-class Dict_1gram:
+class Dict_unigram:
     def __init__(self, SEG_POS_path, DICT_path):
         self.SEG_POS_path = SEG_POS_path
         self.DICT_path = DICT_path
@@ -42,5 +42,5 @@ def combine_data(data_1, data_2, data_output):
 
 if __name__ == '__main__':
     # combine_data(DATA1_SEG_POS, DATA2_SEG_POS, DATA_SEG_POS)
-    dict = Dict_1gram(DATA_SEG_POS, DICT_1GRAM)
+    dict = Dict_unigram(DATA_SEG_POS, DICT_UNIGRAM)
     dict.get_dict()

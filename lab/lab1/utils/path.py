@@ -15,4 +15,5 @@ MM_SCORE = './output/MM/score.txt'
 
 DATA2_SEG_POS = './data/199802.txt'
 DATA_SEG_POS = './data/1998_seg&pos.txt'
-DICT_1GRAM = './output/MM/dic_1gram.txt'
+DICT_UNIGRAM = './output/gram/dic_unigram.txt'
+UNI_SEG = './output/gram/seg_unigram.txt'
