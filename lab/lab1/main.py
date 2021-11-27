@@ -57,20 +57,23 @@ def part_3_4(only_test_data=False):
     f_timecost = open(MM_TIMECOST, 'a', encoding='utf8')
     f_timecost.write('After Optimization:\n')
     
-    # mm = MM(DATA1_DICT, test_data)
-    # time_FMM = mm.MM(MM_type='F', dict_type='AVL', timer=True)
-    # time_BMM = mm.MM(MM_type='B', dict_type='AVL', timer=True)
-    # f_timecost.write('using AVL:\n')
-    # f_timecost.write('\tFMM: time: {:.2f}s\n'.format(time_FMM))
-    # f_timecost.write('\tBMM: time: {:.2f}s\n'.format(time_BMM))
+    # AVL
+    mm = MM(MM_DICT, test_data)
+    time_FMM = mm.MM(MM_type='F', dict_type='AVL', timer=True)
+    time_BMM = mm.MM(MM_type='B', dict_type='AVL', timer=True)
+    f_timecost.write('using AVL:\n')
+    f_timecost.write('\tFMM: time: {:.2f}s\n'.format(time_FMM))
+    f_timecost.write('\tBMM: time: {:.2f}s\n'.format(time_BMM))
     
-    # mm = MM(DATA1_DICT, test_data)
-    # time_FMM = mm.MM(MM_type='F', dict_type='HASH', timer=True)
-    # time_BMM = mm.MM(MM_type='B', dict_type='HASH', timer=True)
-    # f_timecost.write('using HASH:\n')
-    # f_timecost.write('\tFMM: time: {:.2f}s\n'.format(time_FMM))
-    # f_timecost.write('\tBMM: time: {:.2f}s\n'.format(time_BMM))
+    # HASH
+    mm = MM(MM_DICT, test_data)
+    time_FMM = mm.MM(MM_type='F', dict_type='HASH', timer=True)
+    time_BMM = mm.MM(MM_type='B', dict_type='HASH', timer=True)
+    f_timecost.write('using HASH:\n')
+    f_timecost.write('\tFMM: time: {:.2f}s\n'.format(time_FMM))
+    f_timecost.write('\tBMM: time: {:.2f}s\n'.format(time_BMM))
 
+    # HASH1
     mm = MM(MM_DICT, test_data)
     time_FMM = mm.MM(MM_type='F', dict_type='HASH1', timer=True)
     time_BMM = mm.MM(MM_type='B', dict_type='HASH1', timer=True)
@@ -86,7 +89,7 @@ if __name__ == '__main__':
         请依次运行3.1-3.4节
         注意，不建议您运行3.2节，因为它的运行时间实在太太太太太太长了，可跳过
         注意，若您已经运行了3.2节但没有运行完，请先运行3.4节再运行3.3节，否则会找不到文件
-        3.4节运行时间大约为2分钟，分别测试了3个优化算法
+        3.4节运行时间大约为10分钟，分别测试了3个优化算法，您可以通过注释掉3.4节中某个代码块来禁用某个算法
 
         注意，虽然3.1节生成了训练集和测试集，但本代码中默认字典为训练集生成的字典，而测试时使用全文
         若您想用3.4节测试3.1节生成的测试集，则需要将part_3_4和part_3_3的参数only_test_data设置为True

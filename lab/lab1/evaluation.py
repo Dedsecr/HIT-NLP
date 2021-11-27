@@ -62,5 +62,5 @@ class Evaluation:
 
 if __name__ == '__main__':
     with open(MM_SCORE, 'w', encoding='utf8') as f:
-        f.write(str(Evaluation(DATA1_TEST_POS, MM_FMM)))
-        f.write(str(Evaluation(DATA1_TEST_POS, MM_BMM)))
+        f.write('FMM: ' + str(Evaluation(DATA1_SEG_POS, MM_FMM)) + '\n')
+        f.write('BMM: ' + str(Evaluation(DATA1_SEG_POS, MM_BMM)) + '\n')
