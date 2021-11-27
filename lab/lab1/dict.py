@@ -10,7 +10,7 @@ class Dict:
         self.max_len = 0
 
     def get_dict(self):
-        with open(self.SEG_POS_path, 'r', encoding='utf8') as f:
+        with open(self.SEG_POS_path, 'r') as f:
             lines = [l.strip().split() for l in f.readlines()]
         segs = [l[i] for l in lines for i in range(1, len(l))]
         for seg in segs:
@@ -28,5 +28,5 @@ class Dict:
 
 
 if __name__ == '__main__':
-    dict = Dict(DATA1_TRAIN_POS, DATA1_DICT)
+    dict = Dict(DATA1_TRAIN_POS, MM_DICT)
     dict.get_dict()

@@ -8,8 +8,8 @@ from evaluation import *
 
 class MM:
     def __init__(self, DICT_path, CONTENT_path):
-        del_old_file(DATA1_FMM)
-        del_old_file(DATA1_BMM)
+        del_old_file(MM_FMM)
+        del_old_file(MM_BMM)
 
         self.CONTENT_path = CONTENT_path
         self.DICT_path = DICT_path
@@ -17,11 +17,11 @@ class MM:
     def MM(self, MM_type='F', dict_type='AVL', timer=False):
         self.trie = Trie(self.DICT_path, type=dict_type)
         self.trie.build(reverse=True if MM_type != 'F' else False)
-        f_mm = open(DATA1_FMM if MM_type == 'F' else DATA1_BMM, 'a', encoding='utf8')
+        f_mm = open(MM_FMM if MM_type == 'F' else MM_BMM, 'a', encoding='utf8')
 
         if timer:
             time_start = time.time()
-        with open(self.CONTENT_path, 'r', encoding='utf8') as f:
+        with open(self.CONTENT_path, 'r') as f:
             lines = [l.strip() for l in f.readlines()]
         for line in lines:
             now_line, segs = line if MM_type == 'F' else line[::-1], []
@@ -46,38 +46,33 @@ class MM:
             time_end = time.time()
             return time_end - time_start
 
-def post_process(segs):
-    now, result_segs = '', []
-    for i in range(len(segs)):
-        if segs[i].isascii():
-            now += segs[i]
-        elif len(now) > 0:
-            result_segs.append(now)
-            now = segs[i]
-        else:
-            result_segs.append(segs[i])
-    if len(now) > 0:
-        result_segs.append(now)
-    return result_segs
 
 if __name__ == '__main__':    
     '''
     type: 'AVL', 'HASH' or 'HASH1'
     '''
-    mm = MM(DATA1_DICT, DATA1_TEST_CONTENT)
+    f_timecost = open(MM_TIMECOST, 'a', encoding='utf8')
+    f_timecost.write('After Optimization:\n')
+    
+    mm = MM(MM_DICT, DATA1_TEST_CONTENT)
     time_FMM = mm.MM(MM_type='F', dict_type='AVL', timer=True)
     time_BMM = mm.MM(MM_type='B', dict_type='AVL', timer=True)
-    with open(DATA1_TIMECOST, 'w', encoding='utf8') as f:
-        f.write('Before Optimization:\n')
-        f.write('\tFMM: time: {:.2f}, Acc: {}\n'.format(time_FMM, Evaluation(DATA1_TEST_POS, DATA1_FMM).get_accuracy()))
-        f.write('\tBMM: time: {:.2f}, Acc: {}\n'.format(time_BMM, Evaluation(DATA1_TEST_POS, DATA1_BMM).get_accuracy()))
+    f_timecost.write('using AVL:\n')
+    f_timecost.write('\tFMM: time: {:.2f}'.format(time_FMM))
+    f_timecost.write('\tBMM: time: {:.2f}'.format(time_BMM))
     
-    mm = MM(DATA1_DICT, DATA1_TEST_CONTENT)
+    mm = MM(MM_DICT, DATA1_TEST_CONTENT)
+    time_FMM = mm.MM(MM_type='F', dict_type='HASH', timer=True)
+    time_BMM = mm.MM(MM_type='B', dict_type='HASH', timer=True)
+    f_timecost.write('using HASH:\n')
+    f_timecost.write('\tFMM: time: {:.2f}'.format(time_FMM))
+    f_timecost.write('\tBMM: time: {:.2f}'.format(time_BMM))
+
+    mm = MM(MM_DICT, DATA1_TEST_CONTENT)
     time_FMM = mm.MM(MM_type='F', dict_type='HASH1', timer=True)
-    time_FMM = mm.MM(MM_type='B', dict_type='HASH1', timer=True)
-    with open(DATA1_TIMECOST, 'a', encoding='utf8') as f:
-        f.write('After Optimization:\n')
-        f.write('\tFMM: time: {:.2f}, Acc: {}\n'.format(time_FMM, Evaluation(DATA1_TEST_POS, DATA1_FMM).get_accuracy()))
-        f.write('\tBMM: time: {:.2f}, Acc: {}\n'.format(time_BMM, Evaluation(DATA1_TEST_POS, DATA1_BMM).get_accuracy()))
+    time_BMM = mm.MM(MM_type='B', dict_type='HASH1', timer=True)
+    f_timecost.write('using HASH1:\n')
+    f_timecost.write('\tFMM: time: {:.2f}'.format(time_FMM))
+    f_timecost.write('\tBMM: time: {:.2f}'.format(time_BMM))
 
     

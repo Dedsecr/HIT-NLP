@@ -8,7 +8,7 @@ class MyHash:
         self.hash = get_hash
 
     def _insert(self, key, value):
-        index = self.hash(key)
+        index = self.hash(key) % self.length
         if self.items[index]:
             for item in self.items[index]:
                 if key == item[0]:
@@ -16,7 +16,7 @@ class MyHash:
         self.items[index].append((key, value))
 
     def _get(self, key):
-        index = self.hash(key)
+        index = self.hash(key) % self.length
         if self.items[index]:
             for item in self.items[index]:
                 if key == item[0]:

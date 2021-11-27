@@ -4,7 +4,7 @@ import numpy as np
 
 from utils import *
 
-if __name__ == '__main__':
+def split_data():
     random.seed(202111)
     with open(DATA1_SEG_POS, 'r') as f:
         lines_pos = np.array([l.strip() for l in f.readlines()])
@@ -20,12 +20,12 @@ if __name__ == '__main__':
     TRAIN_POS, TEST_POS = lines_pos[:trian_size], lines_pos[trian_size:]
     _, TEST_CONTENT = lines_content[:trian_size], lines_content[trian_size:]
     
-    with open(DATA1_TRAIN_POS, 'w', encoding='utf8') as f:
+    with open(DATA1_TRAIN_POS, 'w') as f:
         for l in TRAIN_POS:
             f.write(l + '\n')
-    with open(DATA1_TEST_POS, 'w', encoding='utf8') as f:
+    with open(DATA1_TEST_POS, 'w') as f:
         for l in TEST_POS:
             f.write(l + '\n')
-    with open(DATA1_TEST_CONTENT, 'w', encoding='utf8') as f:
+    with open(DATA1_TEST_CONTENT, 'w') as f:
         for l in TEST_CONTENT:
             f.write(l + '\n')

@@ -4,7 +4,7 @@ from utils import *
 class Evaluation:
     def __init__(self, DATA_path, PRED_path):
         self.DATA = []
-        with open(DATA_path, 'r', encoding='utf8') as f:
+        with open(DATA_path, 'r') as f:
             lines = [l.strip() for l in f.readlines()]
         for l in lines:
             segs, now_segs = l.split(), []
@@ -33,19 +33,34 @@ class Evaluation:
             start = end
         return region
 
+    def get_cap(self, region1, region2):
+        cap = []
+        for r1 in region1:
+            for r2 in region2:
+                if r1 == r2:
+                    cap.append(r1)
+                    break
+        return cap
+
     def get_accuracy(self):
         assert len(self.DATA) == len(self.PRED)
         A_size, B_size, A_cap_B_size = 0, 0, 0
         for i in range(len(self.DATA)):
             if len(self.DATA[i]) == 0: continue
-            A, B = set(self.to_region(self.DATA[i])), set(self.to_region(self.PRED[i]))
+            A, B = self.to_region(self.DATA[i]), self.to_region(self.PRED[i])
             A_size += len(A)
             B_size += len(B)
-            A_cap_B_size += len(A & B)
-        p, r = A_cap_B_size / B_size * 100, A_cap_B_size / A_size * 100
-        return p, r, 2 * p * r / (p + r)
+            A_cap_B_size += len(self.get_cap(A, B))
+        precision, recall = A_cap_B_size / B_size * 100, A_cap_B_size / A_size * 100
+        return precision, recall, 2 * precision * recall / (precision + recall)
+    
+    def __str__(self):
+        precision, recall, f = self.get_accuracy()
+        return 'precision: %.2f%%, recall: %.2f%%, F: %.2f%%' % (precision, recall, f)
+        
         
 
 if __name__ == '__main__':
-    print(Evaluation(DATA1_TEST_POS, DATA1_FMM).get_accuracy())
-    print(Evaluation(DATA1_TEST_POS, DATA1_BMM).get_accuracy())
+    with open(MM_SCORE, 'w', encoding='utf8') as f:
+        f.write(str(Evaluation(DATA1_TEST_POS, MM_FMM)))
+        f.write(str(Evaluation(DATA1_TEST_POS, MM_BMM)))
