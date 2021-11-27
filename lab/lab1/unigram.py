@@ -6,10 +6,11 @@ from utils import *
 from evaluation import *
 
 class Unigram:
-    def __init__(self, SEG_POS_path, DICT_path):
+    def __init__(self, SEG_POS_path, DICT_path, flags=r'[，。；！？]'):
         del_old_file(UNI_SEG)
         self.SEG_POS_path = SEG_POS_path
         self.DICT_path = DICT_path
+        self.flags = flags
         self._read_dict()
     
     def _read_dict(self):
@@ -34,7 +35,7 @@ class Unigram:
             lines = [l.strip() for l in f.readlines()]
         for line in lines:
             now_line, last_pos = [], 0
-            for i in re.finditer(r'[，。；！？]', line):
+            for i in re.finditer(self.flags, line):
                 now_line.append((line[last_pos: i.start()], i.group()))
                 last_pos = i.start() + 1
             now_line.append((line[last_pos:], ''))
@@ -69,6 +70,15 @@ class Unigram:
         return segs[::-1]
 
 if __name__ == '__main__':
-    # dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM)
-    # dict.Unigram()
+    dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM)
+    dict.Unigram()
     print(str(Evaluation(DATA1_SEG_POS, UNI_SEG)))
+
+    dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM, flags=r'[，。；！？《》【】：“”]')
+    dict.Unigram()
+    print(str(Evaluation(DATA1_SEG_POS, UNI_SEG)))
+
+    """
+        precision: 94.04%, recall: 96.14%, F: 95.08%
+        precision: 94.05%, recall: 96.15%, F: 95.09%
+    """
