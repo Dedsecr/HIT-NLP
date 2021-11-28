@@ -6,11 +6,12 @@ from utils import *
 from evaluation import *
 
 class Unigram:
-    def __init__(self, SEG_POS_path, DICT_path, flags=r'[，。；！？]'):
+    def __init__(self, SEG_POS_path, DICT_path, flags=r'[，。；！？《》【】：“”]', gamma=0.9):
         del_old_file(UNI_SEG)
         self.SEG_POS_path = SEG_POS_path
         self.DICT_path = DICT_path
         self.flags = flags
+        self.gamma = gamma
         self._read_dict()
     
     def _read_dict(self):
@@ -53,12 +54,17 @@ class Unigram:
             f_res.write('\n')
         f_res.close()
     
+    def _get_prob(self, word):
+        # return math.log(1 if word not in self.dict else self.dict[word]) - self.log_total
+        pr = 0 if word not in self.dict else self.dict[word]
+        return math.log(self.gamma * pr / self.dict_total + (1 - self.gamma) / self.dict_total)
+
     def _calc_unigram(self, sequence, DAG):
         len_seq = len(sequence)
-        log_total = math.log(self.dict_total)
+        self.log_total = math.log(self.dict_total)
         route = [(0, 0)] * len_seq
         for i in range(len_seq):
-            route[i] = max([(math.log(1 if sequence[x: i + 1] not in self.dict else self.dict[sequence[x: i + 1]]) - log_total + route[x - 1][0], x) for x in DAG[i]])
+            route[i] = max([(self._get_prob(sequence[x: i + 1]) + route[x - 1][0], x) for x in DAG[i]])
         return route
     
     def _get_segs(self, sequence, route):
@@ -70,15 +76,22 @@ class Unigram:
         return segs[::-1]
 
 if __name__ == '__main__':
-    dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM)
-    dict.Unigram()
-    print(str(Evaluation(DATA1_SEG_POS, UNI_SEG)))
-
-    dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM, flags=r'[，。；！？《》【】：“”]')
-    dict.Unigram()
-    print(str(Evaluation(DATA1_SEG_POS, UNI_SEG)))
+    def test(gamma):
+        dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM, flags=r'[，。；！？《》【】：“”]', gamma=gamma)
+        dict.Unigram()
+        print("gamma={}, acc={}".format(gamma, str(Evaluation(DATA1_SEG_POS, UNI_SEG))))
+    
+    # test(0.9)
+    # test(0.8)
+    # test(0.7)
+    # test(0.6)
+    # test(0.5)
+    test(0.4)
+    test(0.3)
+    test(0.2)
+    test(0.1)
+    test(0)
 
     """
-        precision: 94.04%, recall: 96.14%, F: 95.08%
         precision: 94.05%, recall: 96.15%, F: 95.09%
     """
