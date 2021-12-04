@@ -1,17 +1,19 @@
 # coding:utf-8
 import re
 import math
+from oov import *
 
 from utils import *
 from evaluation import *
 
 class Unigram:
-    def __init__(self, SEG_POS_path, DICT_path, flags=r'[，。；！？《》【】：“”]', gamma=0.9):
+    def __init__(self, CONTENT_path, DICT_path, DICT_HMM_path, flags=r'[，。；！？《》【】：“”]', gamma=0.9):
         del_old_file(UNI_SEG)
-        self.SEG_POS_path = SEG_POS_path
+        self.CONTENT_path = CONTENT_path
         self.DICT_path = DICT_path
         self.flags = flags
         self.gamma = gamma
+        self.oov = OOV(DICT_HMM_path)
         self._read_dict()
     
     def _read_dict(self):
@@ -32,7 +34,7 @@ class Unigram:
     
     def Unigram(self):
         f_res = open(UNI_SEG, 'w', encoding='utf8')
-        with open(self.SEG_POS_path, 'r') as f:
+        with open(self.CONTENT_path, 'r') as f:
             lines = [l.strip() for l in f.readlines()]
         for line in lines:
             now_line, last_pos = [], 0
@@ -48,6 +50,7 @@ class Unigram:
                 DAG = self._get_DAG(word)
                 route = self._calc_unigram(word, DAG)
                 segs = self._get_segs(word, route)
+                segs = self.oov.oov(segs)
                 segs = post_process(segs)
                 f_res.write('/ '.join(segs) + '/ ')
                 if flag != '': f_res.write(flag + '/ ')
@@ -77,20 +80,20 @@ class Unigram:
 
 if __name__ == '__main__':
     def test(gamma):
-        dict = Unigram(DATA1_CONTENT, DICT_UNIGRAM, flags=r'[，。；！？《》【】：“”]', gamma=gamma)
+        dict = Unigram(DATA_TEST_CONTENT, DICT_UNIGRAM, WORDDICT_HMM, flags=r'[，。；！？《》【】：“”]', gamma=gamma)
         dict.Unigram()
-        print("gamma={}, acc={}".format(gamma, str(Evaluation(DATA1_SEG_POS, UNI_SEG))))
+        print("gamma={}, acc={}".format(gamma, str(Evaluation(DATA_TEST_POS, UNI_SEG))))
     
-    # test(0.9)
+    test(0.9)
     # test(0.8)
     # test(0.7)
     # test(0.6)
     # test(0.5)
-    test(0.4)
-    test(0.3)
-    test(0.2)
-    test(0.1)
-    test(0)
+    # test(0.4)
+    # test(0.3)
+    # test(0.2)
+    # test(0.1)
+    # test(0)
 
     """
         precision: 94.05%, recall: 96.15%, F: 95.09%

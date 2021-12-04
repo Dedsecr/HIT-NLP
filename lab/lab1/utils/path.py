@@ -14,6 +14,12 @@ MM_TIMECOST = './output/MM/TimeCost.txt'
 MM_SCORE = './output/MM/score.txt'
 
 DATA2_SEG_POS = './data/199802.txt'
-DATA_SEG_POS = './data/1998_seg&pos.txt'
+DATA_TRAIN_POS = './data/1998_train_pos.txt'
+DATA_TEST_POS = './data/1998_test_pos.txt'
+DATA_TEST_CONTENT = './data/1998_test_content.txt'
 DICT_UNIGRAM = './output/gram/dic_unigram.txt'
 UNI_SEG = './output/gram/seg_unigram.txt'
+
+DICT_HMM = './output/HMM/dic_hmm.pkl'
+WORDDICT_HMM = './output/HMM/word_dict_hmm.txt'
+HMM_SEG = './output/HMM/seg_hmm.txt'

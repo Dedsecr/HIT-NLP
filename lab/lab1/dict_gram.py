@@ -28,19 +28,7 @@ class Dict_unigram:
             for word in self.words:
                 f.write('{} {}\n'.format(word, self.words[word]))
 
-def combine_data(data_1, data_2, data_output):
-    f_res = open(data_output, 'w')
-    with open(data_1, 'r') as f:
-        lines = [l.strip() for l in f.readlines()]
-        for line in lines:
-            f_res.write(line + '\n')
-    with open(data_2, 'r') as f:
-        lines = [l.strip() for l in f.readlines()]
-        for line in lines:
-            f_res.write(line + '\n')
-    f_res.close()
 
 if __name__ == '__main__':
-    # combine_data(DATA1_SEG_POS, DATA2_SEG_POS, DATA_SEG_POS)
-    dict = Dict_unigram(DATA_SEG_POS, DICT_UNIGRAM)
+    dict = Dict_unigram(DATA_TRAIN_POS, DICT_UNIGRAM)
     dict.get_dict()
