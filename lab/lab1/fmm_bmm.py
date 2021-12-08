@@ -37,7 +37,7 @@ class MM:
                 for i in range(len(segs)):
                     segs[i] = segs[i][::-1]
                 segs = segs[::-1]
-            segs = post_process(segs)
+            segs = post_process_mm(segs)
             for seg in segs:
                 f_mm.write(seg + '/ ')
             f_mm.write('\n')

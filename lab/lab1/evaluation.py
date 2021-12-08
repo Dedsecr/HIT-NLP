@@ -14,6 +14,12 @@ class Evaluation:
                 now_segs.append(word)
             self.DATA.append(now_segs)
         
+        # with open('./data/1998_std.txt', 'w', encoding='utf8') as f:
+        #     for l in self.DATA:
+        #         for x in l:
+        #             f.write(x + '/ ')
+        #         f.write('\n')
+        
         self.PRED = []
         with open(PRED_path, 'r', encoding='utf8') as f:
             lines = [l.strip() for l in f.readlines()]
@@ -52,15 +58,16 @@ class Evaluation:
             B_size += len(B)
             A_cap_B_size += len(self.get_cap(A, B))
         precision, recall = A_cap_B_size / B_size * 100, A_cap_B_size / A_size * 100
-        return precision, recall, 2 * precision * recall / (precision + recall)
+        return precision, recall, 2 * precision * recall / (precision + recall) / 100
     
     def __str__(self):
         precision, recall, f = self.get_accuracy()
-        return 'precision: %.2f%%, recall: %.2f%%, F: %.2f%%' % (precision, recall, f)
+        return 'precision: %.2f%%, recall: %.2f%%, F: %.2f' % (precision, recall, f)
         
         
 
 if __name__ == '__main__':
-    with open(MM_SCORE, 'w', encoding='utf8') as f:
-        f.write('FMM: ' + str(Evaluation(DATA1_SEG_POS, MM_FMM)) + '\n')
-        f.write('BMM: ' + str(Evaluation(DATA1_SEG_POS, MM_BMM)) + '\n')
+    print(str(Evaluation(DATA_TEST_POS, BI_SEG)))
+    # with open(MM_SCORE, 'w', encoding='utf8') as f:
+    #     f.write('FMM: ' + str(Evaluation(DATA1_SEG_POS, MM_FMM)) + '\n')
+    #     f.write('BMM: ' + str(Evaluation(DATA1_SEG_POS, MM_BMM)) + '\n')

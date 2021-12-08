@@ -14,7 +14,7 @@ class Dict:
             lines = [l.strip().split() for l in f.readlines()]
         segs = [l[i] for l in lines for i in range(1, len(l))]
         for seg in segs:
-            if '/m' in seg or len(seg) == 0: continue
+            if ('/m' in word and word.isascii()) or len(word) == 0: continue
             word = seg[1 if seg[0] == '[' else 0 : seg.index('/')]
             self.words.add(word)
             self.max_len = max(len(word), self.max_len)

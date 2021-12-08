@@ -3,7 +3,6 @@ import sys
 import pickle
 import re
 import math
-import time
 
 from utils import *
 from evaluation import *
@@ -30,14 +29,12 @@ class HMM:
             self.start_p = pickle.load(f)
             self.trans_p = pickle.load(f)
             self.emit_p = pickle.load(f)
-            for state in self.state_lst:
-                self.state_epsilon[state] = pickle.load(f)
 
     def _viterbi(self, sentence):
         trans = [{}]
         path = {}
         for state in self.state_lst:
-            trans[0][state] = self.start_p[state] + self.emit_p[state].get(sentence[0], self.state_epsilon[state])
+            trans[0][state] = self.start_p[state] + self.emit_p[state].get(sentence[0], self.epsilon)
             path[state] = [state]
 
         for index in range(1, len(sentence)):
@@ -45,8 +42,8 @@ class HMM:
             trans.append({})
 
             for cur_state in self.state_lst:
-                emitp = self.emit_p[cur_state].get(word, self.state_epsilon[cur_state])
-                (prob, pre_state) = max([(trans[index - 1][pre_state] + self.trans_p[pre_state].get(cur_state, self.state_epsilon[pre_state]) + emitp, pre_state) for pre_state in PRE_TOKEN[cur_state]])
+                emitp = self.emit_p[cur_state].get(word, self.epsilon)
+                (prob, pre_state) = max([(trans[index - 1][pre_state] + self.trans_p[pre_state].get(cur_state, self.epsilon) + emitp, pre_state) for pre_state in PRE_TOKEN[cur_state]])
                 trans[index][cur_state] = prob
                 new_path[cur_state] = path[pre_state] + [cur_state]
             path = new_path
