@@ -58,7 +58,7 @@ class Evaluation:
             B_size += len(B)
             A_cap_B_size += len(self.get_cap(A, B))
         precision, recall = A_cap_B_size / B_size * 100, A_cap_B_size / A_size * 100
-        return precision, recall, 2 * precision * recall / (precision + recall) / 100
+        return precision, recall, 2 * precision * recall / (precision + recall)
     
     def __str__(self):
         precision, recall, f = self.get_accuracy()

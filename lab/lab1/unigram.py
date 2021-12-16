@@ -7,7 +7,7 @@ from utils import *
 from evaluation import *
 
 class Unigram:
-    def __init__(self, CONTENT_path, DICT_path, output_path, flags=r'[，。；！？《》【】：“”]', gamma=0.9):
+    def __init__(self, CONTENT_path, DICT_path, output_path, flags=r'[，。；！？《》【】：“”]', gamma=0.2):
         self.CONTENT_path = CONTENT_path
         self.DICT_path = DICT_path
         self.output_path = output_path
@@ -55,7 +55,7 @@ class Unigram:
                 DAG = self._get_DAG(word)
                 route = self._calc_unigram(word, DAG)
                 segs = self._get_segs(word, route)
-                # segs = self.oov.oov(segs)
+                segs = self.oov.oov(segs)
                 segs = post_process(segs)
                 f_res.write('/ '.join(segs) + '/ ')
                 if flag != '': f_res.write(flag + '/ ')

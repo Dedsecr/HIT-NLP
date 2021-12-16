@@ -4,7 +4,7 @@ import numpy as np
 
 from utils import *
 
-def split_data_lm(seed=202111):
+def split_data_lm(seed=2021):
     random.seed(seed)
     with open(DATA1_SEG_POS, 'r') as f:
         lines_pos1 = np.array([l.strip() for l in f.readlines()])

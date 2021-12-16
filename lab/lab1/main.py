@@ -8,6 +8,7 @@ from evaluation import *
 from unigram import *
 from dict_hmm import *
 from dict_gram import *
+from bigram import *
 import split_data_lm
 
 def part_3_1():
@@ -120,7 +121,7 @@ def part_3_5_k_fold():
         dict = Dict_hmm(DATA_TRAIN_POS, DICT_HMM)
         dict.get_dict()
 
-        uni = Unigram(DATA_TEST_CONTENT, DICT_UNIGRAM, UNI_SEG, gamma=0.4)
+        uni = Unigram(DATA_TEST_CONTENT, DICT_UNIGRAM, UNI_SEG)
         uni.Unigram()
 
         p, r, f = Evaluation(DATA_TEST_POS, UNI_SEG).get_accuracy()
